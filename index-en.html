@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>VELOCITY — Hospitality Agency</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VELOCITY is a premium hospitality agency. Space optimization, brand clarity, and a professional presence for restaurants, bars, and bakeries." />
+
+  <!-- Favicons (FILES MUST BE IN REPO ROOT) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0b1220">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b1220;
+      --panel: rgba(10, 15, 25, 0.55);
+      --panelBorder: rgba(255,255,255,0.10);
+      --text: #f3f4f6;
+      --muted: #cbd5e1;
+      --accent: #d6b25e;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* Top nav */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(6, 10, 18, 0.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner{
+      padding: 10px 10%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: relative;
+      min-height: 64px;
+    }
+
+    /* Brand */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration: none;
+      color: var(--text);
+      min-width: 160px;
+    }
+
+    .brand-text{
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 0.08em;
+      font-size: 18px;
+      line-height: 1;
+      margin: 0;
+      color: var(--accent);
+    }
+
+    .nav{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .nav a, .menu-btn{
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+
+    .nav a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.22);
+      opacity: 0.95;
+    }
+
+    .nav a.primary{
+      background: var(--accent);
+      color: #0b1220;
+      border-color: rgba(255,255,255,0.10);
+      font-weight: 800;
+    }
+
+    /* Language switch (desktop) */
+    .lang{
+      display:flex;
+      gap: 8px;
+      margin-left: 10px;
+      padding-left: 10px;
+      border-left: 1px solid rgba(255,255,255,0.14);
+    }
+    .lang a{
+      padding: 8px 10px;
+      min-width: 44px;
+      text-align: center;
+    }
+    .lang a.active{
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.22);
+      font-weight: 800;
+    }
+
+    /* Mobile hamburger */
+    .menu-btn{
+      display:none;
+      cursor:pointer;
+      font-weight: 900;
+      border-radius: 12px;
+    }
+
+    /* Mobile controls wrapper: lang buttons next to burger */
+    .mobile-controls{
+      display:none;
+      align-items:center;
+      gap: 10px;
+    }
+    .lang-mobile{
+      display:flex;
+      gap: 8px;
+    }
+    .lang-mobile a{
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      min-width: 44px;
+      text-align:center;
+      transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+    .lang-mobile a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.22);
+      opacity: 0.95;
+    }
+    .lang-mobile a.active{
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .menu-panel{
+      display:none;
+      position:absolute;
+      top: 58px;
+      right: 10%;
+      width: min(420px, calc(100vw - 12%));
+      background: rgba(6, 10, 18, 0.92);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 10px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+    }
+    .menu-panel.open{ display:block; }
+
+    .menu-panel a{
+      display:block;
+      margin: 8px 0;
+    }
+    .menu-panel .lang{
+      margin: 10px 0 0;
+      padding: 10px 0 0;
+      border-left:none;
+      border-top: 1px solid rgba(255,255,255,0.14);
+      justify-content:flex-start;
+    }
+
+    /* Hero */
+    header {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      padding: 0 10%;
+      background-image:
+        linear-gradient(90deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.60) 100%),
+        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2400&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero {
+      max-width: 880px;
+      background: var(--panel);
+      padding: 44px;
+      border-radius: 16px;
+      border: 1px solid var(--panelBorder);
+      backdrop-filter: blur(8px);
+    }
+
+    .badge{
+      display:inline-block;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 5.6vw, 62px);
+      margin: 0 0 12px;
+      letter-spacing: 0.01em;
+      line-height: 1.08;
+    }
+
+    .hero .subheadline{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 70ch;
+    }
+
+    .hero p{
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 70ch;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    .btn{
+      display:inline-block;
+      padding: 12px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #0b1220;
+      background: var(--accent);
+      transition: transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); opacity: .96; box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+
+    .btn-ghost{
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.16);
+      font-weight: 700;
+      box-shadow: none;
+    }
+
+    .microproof{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .pill{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+
+    /* Sections */
+    section{ padding: 86px 10%; }
+    .section-title{
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      margin: 0 0 18px;
+    }
+    .muted{
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 82ch;
+    }
+
+    .services{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 26px;
+      border-radius: 16px;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.16);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    }
+
+    .card h3{
+      margin: 0 0 10px;
+      font-size: 13px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .card p{ margin: 0; color: var(--muted); line-height: 1.7; }
+
+    .cta-band{
+      margin-top: 22px;
+      padding: 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      display:flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .cta-band .cta-text{
+      color: var(--muted);
+      max-width: 70ch;
+      line-height: 1.7;
+    }
+
+    /* Stats strip */
+    .stats{ padding: 34px 10% 20px; }
+    .stat-grid{ margin-top: 0; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .stat-number{
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      letter-spacing: .02em;
+      color: var(--text);
+      margin: 0 0 6px;
+    }
+    .stat-label{ color: var(--muted); line-height: 1.7; margin: 0; }
+
+    /* Case study */
+    .case-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+    .case-block h4{
+      margin: 0 0 10px;
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .case-block ul{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* FAQ */
+    details{
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.02);
+    }
+    details + details{ margin-top: 12px; }
+    summary{ cursor: pointer; font-weight: 800; letter-spacing: 0.02em; }
+    details p{ margin: 12px 0 0; color: var(--muted); line-height: 1.7; }
+
+    /* Question form */
+    .form-grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
+    .input{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+    }
+    .input::placeholder{ color: rgba(203,213,225,0.65); }
+
+    /* Footer */
+    footer{
+      padding: 44px 10%;
+      background: #070c16;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+    .socials{
+      display:flex;
+      justify-content:center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    footer a{
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 800;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+    footer a:hover{ border-color: rgba(255,255,255,0.22); transform: translateY(-1px); opacity: .95; }
+
+    /* Scroll reveal */
+    .reveal{
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .7s ease, transform .7s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.show{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Sticky CTA */
+    .sticky-cta{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .sticky-cta.show{
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .sticky-cta a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-weight: 900;
+      letter-spacing: .06em;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--accent);
+      color: #0b1220;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.38);
+      transition: transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+    }
+    .sticky-cta a:hover{
+      transform: translateY(-2px);
+      opacity: .97;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.45);
+    }
+    .sticky-dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(11,18,32,0.85);
+      display:inline-block;
+    }
+
+    /* ABOUT CAROUSEL */
+    .about-carousel{
+      position: relative;
+      margin-top: 22px;
+      padding: 0;
+    }
+
+    .carousel-viewport{
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .carousel-track{
+      display: flex;
+      gap: 16px;
+      align-items: stretch;
+      transition: transform 420ms ease;
+      will-change: transform;
+      padding: 0 2px;
+    }
+
+    .carousel-slide{
+      flex: 0 0 62%;
+      min-height: 112px;
+      display: flex;
+      opacity: 0.45;
+      transform: scale(0.96);
+      transition: opacity 320ms ease, transform 320ms ease;
+    }
+
+    .carousel-slide .card{
+      width: 100%;
+      margin: 0;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .carousel-slide.is-active{
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .carousel-arrow{
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(6,10,18,0.72);
+      backdrop-filter: blur(10px);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+      z-index: 5;
+    }
+    .carousel-arrow:hover{
+      transform: translateY(-50%) scale(1.05);
+      border-color: rgba(255,255,255,0.22);
+      opacity: 0.95;
+    }
+    .carousel-arrow.left{ left: -6px; }
+    .carousel-arrow.right{ right: -6px; }
+
+    .carousel-dots{
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .carousel-dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.18);
+      cursor: pointer;
+      opacity: 0.7;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
+    }
+    .carousel-dot:hover{ transform: scale(1.15); opacity: 0.95; }
+    .carousel-dot.active{
+      background: var(--accent);
+      border-color: rgba(255,255,255,0.10);
+      opacity: 1;
+      transform: scale(1.25);
+    }
+
+    /* Mobile */
+    @media (max-width: 720px){
+      .topbar-inner{ padding: 10px 6%; min-height: 62px; }
+      header{ padding: 0 6%; }
+      section{ padding: 70px 6%; }
+      .hero{ padding: 26px; }
+      .brand{ min-width: auto; }
+
+      .stats{ padding: 26px 6% 14px; }
+
+      .nav > a{ display:none; }
+      .nav .lang{ display:none; }
+
+      .mobile-controls{ display:flex; }
+      .menu-btn{ display:inline-flex; }
+
+      .menu-panel{ right: 6%; top: 58px; }
+
+      .carousel-slide{ flex: 0 0 86%; }
+      .carousel-arrow.left{ left: 6px; }
+      .carousel-arrow.right{ right: 6px; }
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <div class="topbar">
+    <div class="topbar-inner">
+
+      <a class="brand" href="#top" aria-label="VELOCITY home">
+        <span class="brand-text">VELOCITY</span>
+      </a>
+
+      <nav class="nav">
+        <a href="#about">ABOUT US</a>
+        <a href="#process">PROCESS</a>
+        <a href="#results">RESULTS</a>
+        <a href="#work">WORKING TOGETHER</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="primary">BOOK A CALL</a>
+
+        <!-- Desktop language -->
+        <div class="lang" aria-label="Language switch">
+          <a data-lang="si" href="index.html">SI</a>
+          <a data-lang="en" href="index-en.html">EN</a>
+        </div>
+
+        <!-- Mobile controls -->
+        <div class="mobile-controls" aria-label="Mobile controls">
+          <div class="lang-mobile" aria-label="Language switch (mobile)">
+            <a data-lang="si" href="index.html">SI</a>
+            <a data-lang="en" href="index-en.html">EN</a>
+          </div>
+
+          <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open menu">☰ MENU</button>
+        </div>
+
+        <div class="menu-panel" id="menuPanel" aria-label="Mobile menu">
+          <a href="#about" onclick="closeMenu()">ABOUT US</a>
+          <a href="#process" onclick="closeMenu()">PROCESS</a>
+          <a href="#results" onclick="closeMenu()">RESULTS</a>
+          <a href="#work" onclick="closeMenu()">WORKING TOGETHER</a>
+          <a href="#faq" onclick="closeMenu()">FAQ</a>
+          <a href="#contact" class="primary" onclick="closeMenu()">BOOK A CALL</a>
+
+          <div class="lang" aria-label="Language switch (menu)">
+            <a data-lang="si" href="index.html">SI</a>
+            <a data-lang="en" href="index-en.html">EN</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <header>
+    <div class="hero reveal">
+      <div class="badge">Hospitality Agency</div>
+
+      <h1>Stronger brands. Better spaces. Real results.</h1>
+      <p class="subheadline">
+        Space layout + brand clarity — for restaurants, bars, and bakeries.
+      </p>
+
+      <p>
+        We help hospitality brands elevate atmosphere, increase inquiries, and improve guest experience —
+        from layout optimization to a professional presence strategy.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn" href="#contact">Book a call</a>
+        <a class="btn btn-ghost" href="#results">See results</a>
+        <a class="btn btn-ghost" href="#process">How it works</a>
+      </div>
+
+      <div class="microproof" aria-label="Trust signals">
+        <span class="pill">Premium approach</span>
+        <span class="pill">Clear process</span>
+        <span class="pill">Strategic growth & visibility</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="Highlights">
+    <div class="services stat-grid">
+      <div class="card reveal">
+        <div class="stat-number">7 days</div>
+        <p class="stat-label">To a clear plan and first improvements (depending on scope).</p>
+      </div>
+      <div class="card reveal">
+        <div class="stat-number">Premium feel</div>
+        <p class="stat-label">We align space + communication so your brand looks consistent.</p>
+      </div>
+      <div class="card reveal">
+        <div class="stat-number">Strategic growth & visibility</div>
+        <p class="stat-label">We work with hospitality, tourism, and service brands that want a better atmosphere, clearer identity, and more bookings.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="reveal">
+    <h2 class="section-title">WHY VELOCITY</h2>
+    <p class="muted">
+      VELOCITY is a premium hospitality agency for businesses that care about details.
+      We combine physical space optimization with a modern presence strategy — so your venue works better,
+      runs smoother, and sells more.
+    </p>
+
+    <div class="about-carousel" aria-label="WHY VELOCITY - services (carousel)">
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="aboutTrack">
+          <div class="carousel-slide">
+            <div class="card">
+              <h3>Space & flow</h3>
+              <p>We optimize layout and guest flow so your venue runs smoother, seats more people, and drives more revenue.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="card">
+              <h3>Brand recognition</h3>
+              <p>We align atmosphere + communication tone + visuals so guests instantly get your style and recognize you faster.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="card">
+              <h3>Professional presence</h3>
+              <p>We build a professional presence (content + strategy) that brings real inquiries and bookings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-arrow left" id="aboutPrev" aria-label="Previous slide">‹</div>
+      <div class="carousel-arrow right" id="aboutNext" aria-label="Next slide">›</div>
+
+      <div class="carousel-dots" id="aboutDots" aria-label="Slide dots"></div>
+    </div>
+
+    <div class="cta-band reveal">
+      <div class="cta-text">
+        If you want, we can do a quick 15-minute review: what to improve in your space + what to improve in your presence.
+      </div>
+      <a class="btn" href="#contact">Book a call</a>
+    </div>
+  </section>
+
+  <!-- ✅ QUESTIONNAIRE (same spot as SI) -->
+  <section id="vprasalnik" class="reveal">
+    <h2 class="section-title">Questionnaire</h2>
+
+    <p class="muted" style="text-align:center; margin: 0 auto; max-width: 700px;">
+      Fill out a short questionnaire and we’ll prepare a clear improvement plan for your venue.
+    </p>
+
+    <div style="text-align:center; margin-top: 26px;">
+      <a class="btn"
+         href="https://docs.google.com/forms/d/e/1FAIpQLSewd5Yb6hRN9v99xlu-TKxkevPCpYrhFmiJ0ahudUvGJKcnFA/viewform"
+         target="_blank"
+         rel="noopener noreferrer">
+        Open the business questionnaire
+      </a>
+    </div>
+
+    <div class="cta-band reveal" style="margin-top: 22px;">
+      <div class="cta-text">
+        Want a faster review? Fill out the questionnaire — we’ll reply with clear next steps.
+      </div>
+      <a class="btn btn-ghost" href="#contact">Book a call</a>
+    </div>
+  </section>
+
+  <section id="process" class="reveal">
+    <h2 class="section-title">How it works</h2>
+    <p class="muted">A simple, professional process — no overcomplication.</p>
+
+    <div class="services">
+      <div class="card reveal">
+        <h3>1) QUICK REVIEW</h3>
+        <p>15-minute call + quick review of your space and current presence. We define goals and priorities.</p>
+      </div>
+
+      <div class="card reveal">
+        <h3>2) PLAN + EXECUTION</h3>
+        <p>We deliver a clear plan (layout, details, communication) and execute it together with you.</p>
+      </div>
+
+      <div class="card reveal">
+        <h3>3) OPTIMIZATION</h3>
+        <p>Monthly improvements: we measure, adjust, and build a consistent premium impression.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="results" class="reveal">
+    <h2 class="section-title">Results</h2>
+    <p class="muted">
+      Focus on real improvements.
+    </p>
+
+    <div class="case-grid">
+      <div class="card case-block reveal">
+        <h4>Example: Bar / Restaurant</h4>
+        <ul>
+          <li><strong>Challenge:</strong> poor guest flow and inconsistent presence.</li>
+          <li><strong>Solution:</strong> layout optimization + clear content strategy.</li>
+          <li><strong>Result:</strong> better guest experience, more inquiries, stronger premium feel.</li>
+        </ul>
+      </div>
+
+      <div class="card case-block reveal">
+        <h4>What we track</h4>
+        <ul>
+          <li>inquiries / bookings</li>
+          <li>visits and repeat visits</li>
+          <li>brand consistency</li>
+          <li>audience response</li>
+        </ul>
+      </div>
+
+      <div class="card case-block reveal">
+        <h4>What you get</h4>
+        <ul>
+          <li>a clear plan (no confusion)</li>
+          <li>premium visual direction</li>
+          <li>improved space + experience</li>
+          <li>a presence that looks professional</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cta-band reveal">
+      <div class="cta-text">
+        Want a plan for your venue? Send us 2–3 photos of the space + the goal you want to achieve.
+      </div>
+      <a class="btn" href="#contact">Contact</a>
+    </div>
+  </section>
+
+  <section id="work" class="reveal">
+    <h2 class="section-title">Working together</h2>
+    <p class="muted">
+      No vagueness, no empty promises. Clear structure, clear steps, focused on outcomes.
+    </p>
+
+    <div class="services">
+      <div class="card reveal">
+        <h3>What we do</h3>
+        <p>
+          We handle strategy: space review, problem identification,
+          layout optimization, plus clear direction for your visuals and communication.
+        </p>
+        <p style="margin-top:10px; color: var(--muted); line-height:1.7;">
+          We work systematically — not guessing, not chasing trends without context.
+        </p>
+      </div>
+
+      <div class="card reveal">
+        <h3>What you get in the first 7 days</h3>
+        <p style="color: var(--muted); line-height:1.8;">
+          • clear current-state review<br>
+          • actionable improvements for the space<br>
+          • guidelines for a premium presence<br>
+          • next-step plan
+        </p>
+        <p style="margin-top:10px; color: var(--muted); line-height:1.7;">
+          No long presentations. No wasted time.
+        </p>
+      </div>
+
+      <div class="card reveal">
+        <h3>What we need from you</h3>
+        <p style="color: var(--muted); line-height:1.8;">
+          • basic venue info<br>
+          • goals (more bookings, better impression, consistency)<br>
+          • openness to improvements
+        </p>
+        <p style="margin-top:10px; color: var(--muted); line-height:1.7;">
+          We don’t demand perfection — we demand collaboration.
+        </p>
+      </div>
+    </div>
+
+    <div class="cta-band reveal">
+      <div class="cta-text">
+        If you want to see if we’re the right fit, we start with one short conversation.
+        No pressure, no obligation.
+      </div>
+      <a class="btn" href="#contact">Book a call</a>
+    </div>
+  </section>
+
+  <section id="ratings" class="reveal">
+    <h2 class="section-title">Reviews</h2>
+    <p class="muted">Two short anonymous reviews — no “fake” stats.</p>
+
+    <div class="services" style="margin-top: 22px;">
+      <div class="card reveal">
+        <h3>★★★★★</h3>
+        <p>“Very clear direction and actionable suggestions. The space feels more premium and organized.”</p>
+        <p style="margin-top:10px; color: var(--muted);">— Anonymous</p>
+      </div>
+
+      <div class="card reveal">
+        <h3>★★★★★</h3>
+        <p>“No complications. Quick review, clear plan, and a more consistent presence.”</p>
+        <p style="margin-top:10px; color: var(--muted);">— Anonymous</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <h2 class="section-title">Book a call</h2>
+    <p class="muted">
+      Fastest way: email or phone. We reply quickly and clearly.
+    </p>
+
+    <div class="services">
+      <div class="card reveal">
+        <h3>Email</h3>
+        <p>
+          <a
+            href="mailto:agencijatrc@gmail.com?subject=VELOCITY%20%E2%80%94%20Inquiry&body=Hello%2C%0A%0ABusiness%20name%3A%20%0ALocation%3A%20%0AGoal%3A%20%0AShort%20description%3A%20%0A%0ABest%20regards%2C"
+            style="color: var(--text); font-weight:800; text-decoration:none;"
+          >
+            agencijatrc@gmail.com
+          </a>
+        </p>
+        <p style="margin-top:10px; color: var(--muted);">Click opens a prefilled email message.</p>
+
+        <p style="margin-top:12px;">
+          <a
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=agencijatrc@gmail.com&su=VELOCITY%20%E2%80%94%20Inquiry&body=Hello%2C%0A%0ABusiness%20name%3A%20%0ALocation%3A%20%0AGoal%3A%20%0AShort%20description%3A%20%0A%0ABest%20regards%2C"
+            target="_blank" rel="noopener noreferrer"
+            style="color: var(--muted); font-weight:800; text-decoration:none;"
+            aria-label="Open Gmail compose"
+          >
+            (open in Gmail)
+          </a>
+        </p>
+      </div>
+
+      <div class="card reveal">
+        <h3>Phone</h3>
+        <p>
+          <a href="tel:+38664263773" style="color: var(--text); font-weight:800; text-decoration:none;">
+            +386 64 263 773
+          </a>
+        </p>
+        <p style="margin-top:10px; color: var(--muted);">Tap to call (works instantly on mobile).</p>
+      </div>
+
+      <div class="card reveal">
+        <h3>Links</h3>
+        <p style="color: var(--muted);">Only X, phone, and email.</p>
+        <p style="margin-top:10px;">
+          <a href="https://x.com/AgencijaAi18334" target="_blank" rel="noopener noreferrer" style="color: var(--text); font-weight:800; text-decoration:none;">X</a>
+          <span style="color: var(--muted); margin: 0 8px;">•</span>
+          <a href="tel:+38664263773" style="color: var(--text); font-weight:800; text-decoration:none;">+386 64 263 773</a>
+          <span style="color: var(--muted); margin: 0 8px;">•</span>
+          <a href="mailto:agencijatrc@gmail.com" style="color: var(--text); font-weight:800; text-decoration:none;">Email</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="reveal">
+    <h2 class="section-title">FAQ</h2>
+
+    <!-- ✅ Added to match SI -->
+    <details class="reveal">
+      <summary>Which tools do you use, and what part of your process creates the “creative leap”?</summary>
+      <p>For more complex problems we use AI as support, and we also rely heavily on experience and tools such as Adobe Creative Cloud, Meta Business Suite, Google Workspace/Sheets, and Excel — depending on project scope and complexity.</p>
+    </details>
+
+    <details class="reveal">
+      <summary>What does space optimization include?</summary>
+      <p>Layout suggestions, flow improvements, seating optimization, atmosphere details, and guidelines for a better guest experience.</p>
+    </details>
+
+    <details class="reveal">
+      <summary>How fast can we start?</summary>
+      <p>After we align on goals. Contact us and we’ll send a clear, short plan for next steps.</p>
+    </details>
+
+    <details class="reveal">
+      <summary>Who do you work with?</summary>
+      <p>Restaurants, bars, cafés, and bakeries — hospitality brands aiming for premium positioning and growth.</p>
+    </details>
+
+    <details class="reveal">
+      <summary>How much does it cost?</summary>
+      <p>Depends on scope. After a short review, we send a clear offer (no hidden costs).</p>
+    </details>
+
+    <div class="cta-band reveal" style="margin-top: 18px;">
+      <div class="cta-text">
+        Have a question that isn’t here? Send it below — we’ll reply by email.
+      </div>
+      <a class="btn" href="javascript:void(0)" onclick="document.getElementById('ask-form').scrollIntoView({behavior:'smooth'});">Add a question</a>
+    </div>
+
+    <div id="ask-form" class="card reveal" style="margin-top: 18px;">
+      <h3>Ask a question</h3>
+      <p class="muted" style="margin-top: 0;">
+        This will open your email app with a prefilled message (no backend).
+      </p>
+
+      <div class="form-grid">
+        <input id="qName" class="input" type="text" placeholder="Name (optional)" />
+        <input id="qEmail" class="input" type="email" placeholder="Email for reply (optional)" />
+        <textarea id="qText" class="input" rows="5" placeholder="Your question..."></textarea>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn" type="button" onclick="sendQuestionEmail()">Send question</button>
+          <button class="btn btn-ghost" type="button" onclick="clearQuestionForm()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div style="font-family:'Playfair Display', serif; letter-spacing:0.06em; font-size:18px;">VELOCITY</div>
+    <p style="color: var(--muted); margin: 10px 0 0;">Hospitality brand growth & space optimization.</p>
+
+    <div class="socials">
+      <a href="https://x.com/AgencijaAi18334" target="_blank" rel="noopener noreferrer">X</a>
+      <a href="mailto:agencijatrc@gmail.com">Email</a>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=agencijatrc@gmail.com&su=VELOCITY%20%E2%80%94%20Inquiry&body=Hello%2C%0A%0ABusiness%20name%3A%20%0ALocation%3A%20%0AGoal%3A%20%0AShort%20description%3A%20%0A%0ABest%20regards%2C" target="_blank" rel="noopener noreferrer">Gmail</a>
+      <a href="tel:+38664263773">+386 64 263 773</a>
+      <a href="index.html">SI</a>
+    </div>
+  </footer>
+
+  <div class="sticky-cta" id="stickyCta">
+    <a href="#contact"><span class="sticky-dot"></span> BOOK A CALL</a>
+  </div>
+
+  <script>
+    /* Auto-highlight language buttons based on filename */
+    (function setLangActive(){
+      const file = (location.pathname.split('/').pop() || '').toLowerCase();
+      const isEN = file.includes('en');
+      document.querySelectorAll('[data-lang="en"]').forEach(a => a.classList.toggle('active', isEN));
+      document.querySelectorAll('[data-lang="si"]').forEach(a => a.classList.toggle('active', !isEN));
+    })();
+
+    function sendQuestionEmail(){
+      const name = (document.getElementById('qName')?.value || '').trim();
+      const email = (document.getElementById('qEmail')?.value || '').trim();
+      const q = (document.getElementById('qText')?.value || '').trim();
+
+      if(!q){
+        alert('Please type your question.');
+        return;
+      }
+
+      const subject = encodeURIComponent('VELOCITY — Website question');
+      const body = encodeURIComponent(
+        `Hello,\n\nI have a question:\n${q}\n\n` +
+        `Name: ${name || '(optional)'}\n` +
+        `Email: ${email || '(optional)'}\n\n` +
+        `Best regards,\n`
+      );
+
+      window.location.href = `mailto:agencijatrc@gmail.com?subject=${subject}&body=${body}`;
+    }
+
+    function clearQuestionForm(){
+      const a = document.getElementById('qName');
+      const b = document.getElementById('qEmail');
+      const c = document.getElementById('qText');
+      if(a) a.value = '';
+      if(b) b.value = '';
+      if(c) c.value = '';
+    }
+
+    function toggleMenu(){
+      const panel = document.getElementById('menuPanel');
+      if(panel) panel.classList.toggle('open');
+    }
+    function closeMenu(){
+      const panel = document.getElementById('menuPanel');
+      if(panel) panel.classList.remove('open');
+    }
+
+    document.addEventListener('click', (e) => {
+      const panel = document.getElementById('menuPanel');
+      const btn = document.querySelector('.menu-btn');
+      if(!panel || !btn) return;
+      if(panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)){
+        panel.classList.remove('open');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeMenu();
+    });
+
+    // Scroll reveal
+    const sticky = document.getElementById('stickyCta');
+    const revealEls = Array.from(document.querySelectorAll('.reveal'));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => io.observe(el));
+
+    window.addEventListener('scroll', () => {
+      if (!sticky) return;
+      if (window.scrollY > 420) sticky.classList.add('show');
+      else sticky.classList.remove('show');
+    });
+
+    /* ABOUT CAROUSEL JS */
+    (function initAboutCarousel(){
+      const track = document.getElementById('aboutTrack');
+      const prevBtn = document.getElementById('aboutPrev');
+      const nextBtn = document.getElementById('aboutNext');
+      const dotsWrap = document.getElementById('aboutDots');
+      if(!track || !prevBtn || !nextBtn || !dotsWrap) return;
+
+      const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+      if(slides.length === 0) return;
+
+      let index = 0;
+      let timer = null;
+
+      function clampIndex(i){
+        const n = slides.length;
+        return (i % n + n) % n;
+      }
+
+      function buildDots(){
+        dotsWrap.innerHTML = '';
+        slides.forEach((_, i) => {
+          const d = document.createElement('button');
+          d.type = 'button';
+          d.className = 'carousel-dot' + (i === index ? ' active' : '');
+          d.setAttribute('aria-label', `Go to slide ${i+1}`);
+          d.addEventListener('click', () => {
+            goTo(i, true);
+          });
+          dotsWrap.appendChild(d);
+        });
+      }
+
+      function updateActiveClasses(){
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+        const dots = Array.from(dotsWrap.querySelectorAll('.carousel-dot'));
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+      }
+
+      function getSlideStep(){
+        const slide = slides[0];
+        const slideW = slide.getBoundingClientRect().width;
+        const styles = window.getComputedStyle(track);
+        const gap = parseFloat(styles.columnGap || styles.gap || '16') || 16;
+        return slideW + gap;
+      }
+
+      function position(){
+        const step = getSlideStep();
+        const viewport = track.parentElement;
+        const viewportW = viewport.getBoundingClientRect().width;
+        const slideW = slides[0].getBoundingClientRect().width;
+        const centerOffset = (viewportW - slideW) / 2;
+
+        const x = -(index * step) + centerOffset;
+        track.style.transform = `translateX(${x}px)`;
+        updateActiveClasses();
+      }
+
+      function resetAuto(){
+        if(timer) clearInterval(timer);
+        timer = setInterval(() => goTo(index + 1, false), 5000);
+      }
+
+      function goTo(i, userAction){
+        index = clampIndex(i);
+        buildDots();
+        position();
+        if(userAction) resetAuto();
+      }
+
+      prevBtn.addEventListener('click', () => goTo(index - 1, true));
+      nextBtn.addEventListener('click', () => goTo(index + 1, true));
+      window.addEventListener('resize', () => position());
+
+      const root = track.closest('.about-carousel');
+      if(root){
+        root.addEventListener('mouseenter', () => { if(timer) clearInterval(timer); });
+        root.addEventListener('mouseleave', () => resetAuto());
+        root.addEventListener('touchstart', () => { if(timer) clearInterval(timer); }, {passive:true});
+        root.addEventListener('touchend', () => resetAuto(), {passive:true});
+      }
+
+      buildDots();
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+      position();
+      resetAuto();
+    })();
+  </script>
+
+</body>
+</html>
