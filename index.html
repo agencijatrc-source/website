@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8" />
+  <title>VELOCITY — Agencija za gostinstvo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VELOCITY je premium agencija za gostinstvo. Optimizacija prostora, postavitve in prepoznavnosti ter profesionalen pristop za restavracije, bare in pekarne." />
+
+  <!-- Favicons (FILES MUST BE IN REPO ROOT) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0b1220">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b1220;
+      --panel: rgba(10, 15, 25, 0.55);
+      --panelBorder: rgba(255,255,255,0.10);
+      --text: #f3f4f6;
+      --muted: #cbd5e1;
+      --accent: #d6b25e;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* Top nav */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(6, 10, 18, 0.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner{
+      padding: 10px 10%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: relative;
+      min-height: 64px;
+    }
+
+    /* Brand */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration: none;
+      color: var(--text);
+      min-width: 160px;
+    }
+
+    .brand-text{
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 0.08em;
+      font-size: 18px;
+      line-height: 1;
+      margin: 0;
+      color: var(--accent);
+    }
+
+    .nav{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .nav a, .menu-btn{
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+
+    .nav a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.22);
+      opacity: 0.95;
+    }
+
+    .nav a.primary{
+      background: var(--accent);
+      color: #0b1220;
+      border-color: rgba(255,255,255,0.10);
+      font-weight: 800;
+    }
+
+    /* Language switch (desktop) */
+    .lang{
+      display:flex;
+      gap: 8px;
+      margin-left: 10px;
+      padding-left: 10px;
+      border-left: 1px solid rgba(255,255,255,0.14);
+    }
+    .lang a{
+      padding: 8px 10px;
+      min-width: 44px;
+      text-align: center;
+    }
+    .lang a.active{
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.22);
+      font-weight: 800;
+    }
+
+    /* Mobile hamburger */
+    .menu-btn{
+      display:none;
+      cursor:pointer;
+      font-weight: 900;
+      border-radius: 12px;
+    }
+
+    /* ✅ Mobile controls wrapper: lang buttons next to burger */
+    .mobile-controls{
+      display:none;
+      align-items:center;
+      gap: 10px;
+    }
+    .lang-mobile{
+      display:flex;
+      gap: 8px;
+    }
+    .lang-mobile a{
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      min-width: 44px;
+      text-align:center;
+      transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+    .lang-mobile a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.22);
+      opacity: 0.95;
+    }
+    .lang-mobile a.active{
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .menu-panel{
+      display:none;
+      position:absolute;
+      top: 58px;
+      right: 10%;
+      width: min(420px, calc(100vw - 12%));
+      background: rgba(6, 10, 18, 0.92);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 10px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+    }
+    .menu-panel.open{ display:block; }
+
+    .menu-panel a{
+      display:block;
+      margin: 8px 0;
+    }
+    .menu-panel .lang{
+      margin: 10px 0 0;
+      padding: 10px 0 0;
+      border-left:none;
+      border-top: 1px solid rgba(255,255,255,0.14);
+      justify-content:flex-start;
+    }
+
+    /* Hero */
+    header {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      padding: 0 10%;
+      background-image:
+        linear-gradient(90deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.60) 100%),
+        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2400&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero {
+      max-width: 880px;
+      background: var(--panel);
+      padding: 44px;
+      border-radius: 16px;
+      border: 1px solid var(--panelBorder);
+      backdrop-filter: blur(8px);
+    }
+
+    .badge{
+      display:inline-block;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 5.6vw, 62px);
+      margin: 0 0 12px;
+      letter-spacing: 0.01em;
+      line-height: 1.08;
+    }
+
+    .hero .subheadline{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 70ch;
+    }
+
+    .hero p{
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 70ch;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    .btn{
+      display:inline-block;
+      padding: 12px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #0b1220;
+      background: var(--accent);
+      transition: transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); opacity: .96; box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+
+    .btn-ghost{
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.16);
+      font-weight: 700;
+      box-shadow: none;
+    }
+
+    .microproof{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .pill{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+
+    /* Sections */
+    section{ padding: 86px 10%; }
+    .section-title{
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      margin: 0 0 18px;
+    }
+    .muted{
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 82ch;
+    }
+
+    .services{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 26px;
+      border-radius: 16px;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.16);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    }
+
+    .card h3{
+      margin: 0 0 10px;
+      font-size: 13px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .card p{ margin: 0; color: var(--muted); line-height: 1.7; }
+
+    .cta-band{
+      margin-top: 22px;
+      padding: 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      display:flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .cta-band .cta-text{
+      color: var(--muted);
+      max-width: 70ch;
+      line-height: 1.7;
+    }
+
+    /* Stats strip */
+    .stats{ padding: 34px 10% 20px; }
+    .stat-grid{ margin-top: 0; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .stat-number{
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      letter-spacing: .02em;
+      color: var(--text);
+      margin: 0 0 6px;
+    }
+    .stat-label{ color: var(--muted); line-height: 1.7; margin: 0; }
+
+    /* Case study */
+    .case-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+    .case-block h4{
+      margin: 0 0 10px;
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .case-block ul{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* FAQ */
+    details{
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.02);
+    }
+    details + details{ margin-top: 12px; }
+    summary{ cursor: pointer; font-weight: 800; letter-spacing: 0.02em; }
+    details p{ margin: 12px 0 0; color: var(--muted); line-height: 1.7; }
+
+    /* Question form */
+    .form-grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
+    .input{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+    }
+    .input::placeholder{ color: rgba(203,213,225,0.65); }
+
+    /* Footer */
+    footer{
+      padding: 44px 10%;
+      background: #070c16;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+    .socials{
+      display:flex;
+      justify-content:center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    footer a{
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 800;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+    footer a:hover{ border-color: rgba(255,255,255,0.22); transform: translateY(-1px); opacity: .95; }
+
+    /* Scroll reveal */
+    .reveal{
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .7s ease, transform .7s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.show{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Sticky CTA */
+    .sticky-cta{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .sticky-cta.show{
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .sticky-cta a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-weight: 900;
+      letter-spacing: .06em;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--accent);
+      color: #0b1220;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.38);
+      transition: transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+    }
+    .sticky-cta a:hover{
+      transform: translateY(-2px);
+      opacity: .97;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.45);
+    }
+    .sticky-dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(11,18,32,0.85);
+      display:inline-block;
+    }
+
+    /* =========================
+       ABOUT CAROUSEL (slides)
+       ========================= */
+    .about-carousel{
+      position: relative;
+      margin-top: 22px;
+      padding: 0;
+    }
+
+    .carousel-viewport{
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .carousel-track{
+      display: flex;
+      gap: 16px;
+      align-items: stretch;
+      transition: transform 420ms ease;
+      will-change: transform;
+      padding: 0 2px;
+    }
+
+    .carousel-slide{
+      flex: 0 0 62%;
+      min-height: 112px;
+      display: flex;
+      opacity: 0.45;
+      transform: scale(0.96);
+      transition: opacity 320ms ease, transform 320ms ease;
+    }
+
+    .carousel-slide .card{
+      width: 100%;
+      margin: 0;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .carousel-slide.is-active{
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .carousel-arrow{
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(6,10,18,0.72);
+      backdrop-filter: blur(10px);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
+      z-index: 5;
+    }
+    .carousel-arrow:hover{
+      transform: translateY(-50%) scale(1.05);
+      border-color: rgba(255,255,255,0.22);
+      opacity: 0.95;
+    }
+    .carousel-arrow.left{ left: -6px; }
+    .carousel-arrow.right{ right: -6px; }
+
+    .carousel-dots{
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .carousel-dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.18);
+      cursor: pointer;
+      opacity: 0.7;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
+    }
+    .carousel-dot:hover{ transform: scale(1.15); opacity: 0.95; }
+    .carousel-dot.active{
+      background: var(--accent);
+      border-color: rgba(255,255,255,0.10);
+      opacity: 1;
+      transform: scale(1.25);
+    }
+
+    /* Mobile */
+    @media (max-width: 720px){
+      .topbar-inner{ padding: 10px 6%; min-height: 62px; }
+      header{ padding: 0 6%; }
+      section{ padding: 70px 6%; }
+      .hero{ padding: 26px; }
+      .brand{ min-width: auto; }
+
+      .stats{ padding: 26px 6% 14px; }
+
+      .nav > a{ display:none; }
+      .nav .lang{ display:none; }
+
+      /* ✅ show mobile controls */
+      .mobile-controls{ display:flex; }
+      .menu-btn{ display:inline-flex; }
+
+      .menu-panel{ right: 6%; top: 58px; }
+
+      .carousel-slide{ flex: 0 0 86%; }
+      .carousel-arrow.left{ left: 6px; }
+      .carousel-arrow.right{ right: 6px; }
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <div class="topbar">
+    <div class="topbar-inner">
+
+      <a class="brand" href="#top" aria-label="VELOCITY domov">
+        <span class="brand-text">VELOCITY</span>
+      </a>
+
+      <nav class="nav">
+        <a href="#about">O NAS</a>
+        <a href="#process">KAKO POTEKA</a>
+        <a href="#results">REZULTATI</a>
+        <a href="#work">SODELOVANJE</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="primary">REZERVIRAJ KLIC</a>
+
+        <!-- Desktop language -->
+        <div class="lang" aria-label="Language switch">
+          <a data-lang="si" href="index.html">SI</a>
+          <a data-lang="en" href="index-en.html">EN</a>
+        </div>
+
+        <!-- ✅ Mobile: language right next to burger -->
+        <div class="mobile-controls" aria-label="Mobile controls">
+          <div class="lang-mobile" aria-label="Language switch (mobile)">
+            <a data-lang="si" href="index.html">SI</a>
+            <a data-lang="en" href="index-en.html">EN</a>
+          </div>
+
+          <button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open menu">☰ MENU</button>
+        </div>
+
+        <div class="menu-panel" id="menuPanel" aria-label="Mobile menu">
+          <a href="#about" onclick="closeMenu()">O NAS</a>
+          <a href="#process" onclick="closeMenu()">KAKO POTEKA</a>
+          <a href="#results" onclick="closeMenu()">REZULTATI</a>
+          <a href="#work" onclick="closeMenu()">SODELOVANJE</a>
+          <a href="#faq" onclick="closeMenu()">FAQ</a>
+          <a href="#contact" class="primary" onclick="closeMenu()">REZERVIRAJ KLIC</a>
+
+          <!-- Optional: keep language inside menu too (handy) -->
+          <div class="lang" aria-label="Language switch (menu)">
+            <a data-lang="si" href="index.html">SI</a>
+            <a data-lang="en" href="index-en.html">EN</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <header>
+    <div class="hero reveal">
+      <div class="badge">Agencija za gostinstvo</div>
+
+      <h1>Močnejše znamke. Boljši prostori. Pravi rezultati.</h1>
+      <p class="subheadline">
+        Postavitev prostora + prepoznavnost — za restavracije, bare in pekarne.
+      </p>
+
+      <p>
+        Pomagamo gostinskim znamkam dvigniti ambient, povečati povpraševanja in izboljšati izkušnjo gostov —
+        od optimizacije postavitve do profesionalne strategije nastopa.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn" href="#contact">Rezerviraj klic</a>
+        <a class="btn btn-ghost" href="#results">Poglej rezultate</a>
+        <a class="btn btn-ghost" href="#process">Kako poteka</a>
+      </div>
+
+      <div class="microproof" aria-label="Trust signals">
+        <span class="pill">Premium pristop</span>
+        <span class="pill">Jasen proces</span>
+        <span class="pill">Strateška rast in prepoznavnost</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="Highlights">
+    <div class="services stat-grid">
+      <div class="card reveal">
+        <div class="stat-number">7 dni</div>
+        <p class="stat-label">Do jasnega plana in prvih izboljšav (odvisno od obsega).</p>
+      </div>
+      <div class="card reveal">
+        <div class="stat-number">Premium vtis</div>
+        <p class="stat-label">Uskladimo prostor + komunikacijo, da delujete konsistentno.</p>
+      </div>
+      <div class="card reveal">
+        <div class="stat-number">Strateška rast in prepoznavnost</div>
+        <p class="stat-label">Delamo z gostinstvom, turizmom in storitvenimi znamkami, ki želijo boljši ambient, jasnejšo identiteto in več rezervacij.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="reveal">
+    <h2 class="section-title">ZAKAJ VELOCITY</h2>
+    <p class="muted">
+      VELOCITY je premium agencija za gostinstvo, namenjena podjetjem, ki jim je mar za detajle.
+      Združujemo optimizacijo fizičnega prostora in sodobno strategijo nastopa — da vaš lokal deluje bolje,
+      teče bolj gladko in prodaja več.
+    </p>
+
+    <div class="about-carousel" aria-label="ZAKAJ VELOCITY - storitve (carousel)">
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="aboutTrack">
+          <div class="carousel-slide">
+            <div class="card">
+              <h3>Prostor & pretok</h3>
+              <p>Optimiziramo postavitev in pretok gostov, da lokal deluje bolj tekoče, sprejme več ljudi in ustvari več prometa.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="card">
+              <h3>Prepoznavnost znamke</h3>
+              <p>Uskladimo ambient + ton komunikacije + vizualno podobo, da gostje takoj razumejo vaš stil in vas lažje prepoznajo.</p>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="card">
+              <h3>Profesionalen pristop</h3>
+              <p>Postavimo profesionalen nastop (vsebina + strategija) in ga vodimo tako, da prinaša realna povpraševanja in rezervacije.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-arrow left" id="aboutPrev" aria-label="Previous slide">‹</div>
+      <div class="carousel-arrow right" id="aboutNext" aria-label="Next slide">›</div>
+
+      <div class="carousel-dots" id="aboutDots" aria-label="Slide dots"></div>
+    </div>
+
+    <div class="cta-band reveal">
+      <div class="cta-text">
+        Če želite, vam v 15 minutah pripravimo hiter pregled: kaj izboljšati v prostoru + kaj izboljšati v nastopu.
+      </div>
+      <a class="btn" href="#contact">Rezerviraj klic</a>
+    </div>
+ 
+  </section>
+<section id="vprasalnik" class="reveal">
+  <h2 class="section-title">Vprašalnik</h2>
+
+  <p class="muted" style="text-align:center; margin: 0 auto; max-width: 700px;">
+    Izpolnite kratek vprašalnik in pripravili bomo predlog izboljšav za vaš lokal.
+  </p>
+
+  <div style="text-align:center; margin-top: 26px;">
+    <a class="btn"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSewd5Yb6hRN9v99xlu-TKxkevPCpYrhFmiJ0ahudUvGJKcnFA/viewform"
+       target="_blank"
+       rel="noopener noreferrer">
+      Odpri poslovni vprašalnik
+    </a>
+  </div>
+
+  <div class="cta-band reveal" style="margin-top: 22px;">
+    <div class="cta-text">
+      Če želite hitrejši pregled, izpolnite vprašalnik — odgovorimo z jasnimi naslednjimi koraki.
+    </div>
+    <a class="btn btn-ghost" href="#contact">Rezerviraj klic</a>
+  </div>
+</section>
+ 
+  <section id="process" class="reveal">
+    <h2 class="section-title">Kako poteka</h2>
+    <p class="muted">Preprost, profesionalen proces — brez kompliciranja.</p>
+
+    <div class="services">
+      <div class="card reveal">
+        <h3>1) HITER PREGLED</h3>
+        <p>15-min klic + kratek pregled prostora in trenutnega nastopa. Definiramo cilje in prioritete.</p>
+      </div>
+
+      <div class="card reveal">
+        <h3>2) PLAN + IZVEDBA</h3>
+        <p>Pripravimo jasen plan (postavitev, detajli, komunikacija) in ga izvedemo skupaj z vami.</p>
+      </div>
+
+      <div class="card reveal">
+        <h3>3) OPTIMIZACIJA</h3>
+        <p>Mesečno izboljševanje: merimo, prilagajamo in gradimo konsistenten premium vtis.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="results" class="reveal">
+    <h2 class="section-title">Rezultati</h2>
+    <p class="muted">
+      Fokus na realnih izboljšavah.
+    </p>
+
+    <div class="case-grid">
+      <div class="card case-block reveal">
+        <h4>Primer: Bar / Restavracija</h4>
+        <ul>
+          <li><strong>Izziv:</strong> prostor ni imel pretoka, nastop je bil nedosleden.</li>
+          <li><strong>Rešitev:</strong> optimizacija postavitve + jasna vsebinska strategija.</li>
+          <li><strong>Rezultat:</strong> boljša izkušnja gostov, več povpraševanj, bolj premium vtis.</li>
+        </ul>
+      </div>
+
+      <div class="card case-block reveal">
+        <h4>Kaj merimo</h4>
+        <ul>
+          <li>povpraševanja / rezervacije</li>
+          <li>obisk in ponovni obisk</li>
+          <li>konsistenca znamke</li>
+          <li>odzivnost publike</li>
+        </ul>
+      </div>
+
+      <div class="card case-block reveal">
+        <h4>Kaj dobite</h4>
+        <ul>
+          <li>jasen plan (brez zmede)</li>
+          <li>premium vizualna smer</li>
+          <li>izboljšan prostor + izkušnja</li>
+          <li>nastop, ki izgleda profesionalno</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cta-band reveal">
+      <div class="cta-text">
+        Želite, da pripravimo plan za vaš lokal? Pošljite nam 2–3 slike prostora + cilj, ki ga želite doseči.
+      </div>
+      <a class="btn" href="#contact">Kontakt</a>
+    </div>
+  </section>
+
+  <section id="work" class="reveal">
+    <h2 class="section-title">Kako sodelovanje poteka</h2>
+    <p class="muted">
+      Brez nejasnosti, brez praznih obljub. Jasna struktura, jasni koraki in fokus na rezultat.
+    </p>
+
+    <div class="services">
+      <div class="card reveal">
+        <h3>Kaj naredimo mi</h3>
+        <p>
+          Prevzamemo strateški del: pregled prostora, identifikacijo problemov,
+          optimizacijo postavitve ter jasno smer za vizualni in komunikacijski nastop.
+        </p>
+        <p style="margin-top:10px; color: var(--muted); line-height:1.7;">
+          Delamo sistematično — ne na pamet in ne po trendih brez konteksta.
+        </p>
+      </div>
+
+      <div class="card reveal">
+        <h3>Kaj dobite v prvih 7 dneh</h3>
+        <p style="color: var(--muted); line-height:1.8;">
+          • jasen pregled stanja<br>
+          • konkretne predloge izboljšav prostora<br>
+          • smernice za premium nastop<br>
+          • plan naslednjih korakov
+        </p>
+        <p style="margin-top:10px; color: var(--muted); line-height:1.7;">
+          Vse brez dolgih prezentacij in brez izgube časa.
+        </p>
+      </div>
+
+      <div class="card reveal">
+        <h3>Kaj pričakujemo od vas</h3>
+        <p style="color: var(--muted); line-height:1.8;">
+          • osnovne informacije o lokalu<br>
+          • cilje (več rezervacij, boljši vtis, konsistenca)<br>
+          • odprtost za izboljšave
+        </p>
+        <p style="margin-top:10px; color: var(--muted); line-height:1.7;">
+          Ne zahtevamo popolnosti — zahtevamo sodelovanje.
+        </p>
+      </div>
+    </div>
+
+    <div class="cta-band reveal">
+      <div class="cta-text">
+        Če želite preveriti, ali smo prava izbira, začnemo z enim kratkim pogovorom.
+        Brez obveznosti, brez prodajnega pritiska.
+      </div>
+      <a class="btn" href="#contact">Rezerviraj klic</a>
+    </div>
+  </section>
+
+  <section id="ratings" class="reveal">
+    <h2 class="section-title">Mnenja</h2>
+    <p class="muted">Dve kratki povratni informaciji (anonimno) — brez “fake” statistike.</p>
+
+    <div class="services" style="margin-top: 22px;">
+      <div class="card reveal">
+        <h3>★★★★★</h3>
+        <p>“Zelo jasna smer in konkretni predlogi. Prostor deluje bolj urejeno in premium.”</p>
+        <p style="margin-top:10px; color: var(--muted);">— Anonimno</p>
+      </div>
+
+      <div class="card reveal">
+        <h3>★★★★★</h3>
+        <p>“Brez kompliciranja. Hiter pregled, jasen plan in bolj konsistenten nastop.”</p>
+        <p style="margin-top:10px; color: var(--muted);">— Anonimno</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <h2 class="section-title">Rezerviraj klic</h2>
+    <p class="muted">
+      Najhitrejši način: e-pošta ali telefon. Odgovorimo hitro in konkretno.
+    </p>
+
+    <div class="services">
+      <div class="card reveal">
+        <h3>E-pošta</h3>
+        <p>
+          <a
+            href="mailto:agencijatrc@gmail.com?subject=VELOCITY%20%E2%80%94%20Povpra%C5%A1evanje&body=Pozdravljeni%2C%0A%0AIme%20obrata/storitve%3A%20%0ALokacija%3A%20%0ACilj%3A%20%0AKratek%20opis%3A%20%0A%0ALep%20pozdrav%2C"
+            style="color: var(--text); font-weight:800; text-decoration:none;"
+          >
+            agencijatrc@gmail.com
+          </a>
+        </p>
+        <p style="margin-top:10px; color: var(--muted);">Klik odpre e-pošto z že pripravljenim sporočilom.</p>
+
+        <p style="margin-top:12px;">
+          <a
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=agencijatrc@gmail.com&su=VELOCITY%20%E2%80%94%20Povpra%C5%A1evanje&body=Pozdravljeni%2C%0A%0AIme%20lokala%3A%20%0ALokacija%3A%20%0ACilj%3A%20%0AKratek%20opis%3A%20%0A%0ALep%20pozdrav%2C"
+            target="_blank" rel="noopener noreferrer"
+            style="color: var(--muted); font-weight:800; text-decoration:none;"
+            aria-label="Open Gmail compose"
+          >
+            (odpri v Gmailu)
+          </a>
+        </p>
+      </div>
+
+      <div class="card reveal">
+        <h3>Telefon</h3>
+        <p>
+          <a href="tel:+38664263773" style="color: var(--text); font-weight:800; text-decoration:none;">
+            064 263 773
+          </a>
+        </p>
+        <p style="margin-top:10px; color: var(--muted);">Klik za klic (na telefonu deluje takoj).</p>
+      </div>
+
+      <div class="card reveal">
+        <h3>Povezave</h3>
+        <p style="color: var(--muted);">Samo X, telefon in e-pošta.</p>
+        <p style="margin-top:10px;">
+          <a href="https://x.com/AgencijaAi18334" target="_blank" rel="noopener noreferrer" style="color: var(--text); font-weight:800; text-decoration:none;">X</a>
+          <span style="color: var(--muted); margin: 0 8px;">•</span>
+          <a href="tel:+38664263773" style="color: var(--text); font-weight:800; text-decoration:none;">064 263 773</a>
+          <span style="color: var(--muted); margin: 0 8px;">•</span>
+          <a href="mailto:agencijatrc@gmail.com" style="color: var(--text); font-weight:800; text-decoration:none;">E-pošta</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="reveal">
+    <h2 class="section-title">FAQ</h2>
+
+    <details class="reveal">
+      <summary>S katerimi orodji si pomagate in kateri del vašega procesa zaznamuje kreativni preskok?</summary>
+      <p>Za kompleksnejše probleme nam je v pomoč AI, v veliki meri pa jih rešujemo na podlagi znanja(adope creative cloud, meta business suite, google workspace/sheets, Excel), zahtevnosti projekta in izkušenj.</p>
+    </details>
+
+    <details class="reveal">
+      <summary>Kaj vključuje optimizacija prostora?</summary>
+      <p>Predloge postavitve, izboljšave pretoka, optimizacijo sedišč, detajle ambienta in smernice za boljšo izkušnjo gostov.</p>
+    </details>
+
+    <details class="reveal">
+      <summary>Kako hitro lahko začnemo?</summary>
+      <p>Po uskladitvi ciljev. Kontaktirajte nas in pripravimo jasen, kratek plan naslednjih korakov.</p>
+    </details>
+
+    <details class="reveal">
+      <summary>S kom sodelujete?</summary>
+      <p>Restavracije, bari, kavarne in pekarne — gostinski brendi, ki želijo premium pozicioniranje in rast.</p>
+    </details>
+
+    <details class="reveal">
+      <summary>Koliko stane?</summary>
+      <p>Odvisno od obsega. Po kratkem pregledu vam pošljemo jasno ponudbo (brez skritih stroškov).</p>
+    </details>
+
+    <div class="cta-band reveal" style="margin-top: 18px;">
+      <div class="cta-text">
+        Imate vprašanje, ki ga ni tukaj? Pošljite ga spodaj — odgovorimo po e-pošti.
+      </div>
+      <a class="btn" href="javascript:void(0)" onclick="document.getElementById('ask-form').scrollIntoView({behavior:'smooth'});">Dodaj vprašanje</a>
+    </div>
+
+    <div id="ask-form" class="card reveal" style="margin-top: 18px;">
+      <h3>Postavi vprašanje</h3>
+      <p class="muted" style="margin-top: 0;">
+        To bo odprlo vaš e-mail program z izpolnjenim sporočilom (brez backend-a).
+      </p>
+
+      <div class="form-grid">
+        <input id="qName" class="input" type="text" placeholder="Ime (neobvezno)" />
+        <input id="qEmail" class="input" type="email" placeholder="E-pošta za odgovor (neobvezno)" />
+        <textarea id="qText" class="input" rows="5" placeholder="Vaše vprašanje..."></textarea>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn" type="button" onclick="sendQuestionEmail()">Pošlji vprašanje</button>
+          <button class="btn btn-ghost" type="button" onclick="clearQuestionForm()">Počisti</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div style="font-family:'Playfair Display', serif; letter-spacing:0.06em; font-size:18px;">VELOCITY</div>
+    <p style="color: var(--muted); margin: 10px 0 0;">Rast gostinskih znamk in optimizacija prostora.</p>
+
+    <div class="socials">
+      <a href="https://x.com/AgencijaAi18334" target="_blank" rel="noopener noreferrer">X</a>
+      <a href="mailto:agencijatrc@gmail.com">E-pošta</a>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=agencijatrc@gmail.com&su=VELOCITY%20%E2%80%94%20Povpra%C5%A1evanje&body=Pozdravljeni%2C%0A%0AIme%20lokala%3A%20%0ALokacija%3A%20%0ACilj%3A%20%0AKratek%20opis%3A%20%0A%0ALep%20pozdrav%2C" target="_blank" rel="noopener noreferrer">Gmail</a>
+      <a href="tel:+38664263773">064 263 773</a>
+      <a href="index-en.html">EN</a>
+    </div>
+  </footer>
+
+  <div class="sticky-cta" id="stickyCta">
+    <a href="#contact"><span class="sticky-dot"></span> REZERVIRAJ KLIC</a>
+  </div>
+
+  <script>
+    /* ✅ Auto-highlight language buttons based on filename */
+    (function setLangActive(){
+      const file = (location.pathname.split('/').pop() || '').toLowerCase();
+      const isEN = file.includes('en');
+      document.querySelectorAll('[data-lang="en"]').forEach(a => a.classList.toggle('active', isEN));
+      document.querySelectorAll('[data-lang="si"]').forEach(a => a.classList.toggle('active', !isEN));
+    })();
+
+    function sendQuestionEmail(){
+      const name = (document.getElementById('qName')?.value || '').trim();
+      const email = (document.getElementById('qEmail')?.value || '').trim();
+      const q = (document.getElementById('qText')?.value || '').trim();
+
+      if(!q){
+        alert('Prosim vpišite vprašanje.');
+        return;
+      }
+
+      const subject = encodeURIComponent('VELOCITY — Vprašanje s spletne strani');
+      const body = encodeURIComponent(
+        `Pozdravljeni,\n\nImam vprašanje:\n${q}\n\n` +
+        `Ime: ${name || '(neobvezno)'}\n` +
+        `E-pošta: ${email || '(neobvezno)'}\n\n` +
+        `Lep pozdrav,\n`
+      );
+
+      window.location.href = `mailto:agencijatrc@gmail.com?subject=${subject}&body=${body}`;
+    }
+
+    function clearQuestionForm(){
+      const a = document.getElementById('qName');
+      const b = document.getElementById('qEmail');
+      const c = document.getElementById('qText');
+      if(a) a.value = '';
+      if(b) b.value = '';
+      if(c) c.value = '';
+    }
+
+    function toggleMenu(){
+      const panel = document.getElementById('menuPanel');
+      if(panel) panel.classList.toggle('open');
+    }
+    function closeMenu(){
+      const panel = document.getElementById('menuPanel');
+      if(panel) panel.classList.remove('open');
+    }
+
+    document.addEventListener('click', (e) => {
+      const panel = document.getElementById('menuPanel');
+      const btn = document.querySelector('.menu-btn');
+      if(!panel || !btn) return;
+      if(panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)){
+        panel.classList.remove('open');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeMenu();
+    });
+
+    // Scroll reveal
+    const sticky = document.getElementById('stickyCta');
+    const revealEls = Array.from(document.querySelectorAll('.reveal'));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => io.observe(el));
+
+    window.addEventListener('scroll', () => {
+      if (!sticky) return;
+      if (window.scrollY > 420) sticky.classList.add('show');
+      else sticky.classList.remove('show');
+    });
+
+    /* =========================
+       ABOUT CAROUSEL JS
+       ========================= */
+    (function initAboutCarousel(){
+      const track = document.getElementById('aboutTrack');
+      const prevBtn = document.getElementById('aboutPrev');
+      const nextBtn = document.getElementById('aboutNext');
+      const dotsWrap = document.getElementById('aboutDots');
+      if(!track || !prevBtn || !nextBtn || !dotsWrap) return;
+
+      const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+      if(slides.length === 0) return;
+
+      let index = 0;
+      let timer = null;
+
+      function clampIndex(i){
+        const n = slides.length;
+        return (i % n + n) % n;
+      }
+
+      function buildDots(){
+        dotsWrap.innerHTML = '';
+        slides.forEach((_, i) => {
+          const d = document.createElement('button');
+          d.type = 'button';
+          d.className = 'carousel-dot' + (i === index ? ' active' : '');
+          d.setAttribute('aria-label', `Go to slide ${i+1}`);
+          d.addEventListener('click', () => {
+            goTo(i, true);
+          });
+          dotsWrap.appendChild(d);
+        });
+      }
+
+      function updateActiveClasses(){
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+        const dots = Array.from(dotsWrap.querySelectorAll('.carousel-dot'));
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+      }
+
+      function getSlideStep(){
+        const slide = slides[0];
+        const slideW = slide.getBoundingClientRect().width;
+        const styles = window.getComputedStyle(track);
+        const gap = parseFloat(styles.columnGap || styles.gap || '16') || 16;
+        return slideW + gap;
+      }
+
+      function position(){
+        const step = getSlideStep();
+        const viewport = track.parentElement;
+        const viewportW = viewport.getBoundingClientRect().width;
+        const slideW = slides[0].getBoundingClientRect().width;
+        const centerOffset = (viewportW - slideW) / 2;
+
+        const x = -(index * step) + centerOffset;
+        track.style.transform = `translateX(${x}px)`;
+        updateActiveClasses();
+      }
+
+      function resetAuto(){
+        if(timer) clearInterval(timer);
+        timer = setInterval(() => goTo(index + 1, false), 5000);
+      }
+
+      function goTo(i, userAction){
+        index = clampIndex(i);
+        buildDots();
+        position();
+        if(userAction) resetAuto();
+      }
+
+      prevBtn.addEventListener('click', () => goTo(index - 1, true));
+      nextBtn.addEventListener('click', () => goTo(index + 1, true));
+      window.addEventListener('resize', () => position());
+
+      const root = track.closest('.about-carousel');
+      if(root){
+        root.addEventListener('mouseenter', () => { if(timer) clearInterval(timer); });
+        root.addEventListener('mouseleave', () => resetAuto());
+        root.addEventListener('touchstart', () => { if(timer) clearInterval(timer); }, {passive:true});
+        root.addEventListener('touchend', () => resetAuto(), {passive:true});
+      }
+
+      buildDots();
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+      position();
+      resetAuto();
+    })();
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
