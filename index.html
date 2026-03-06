@@ -16,22 +16,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* PLATFORM PREVIEW */
-
-.app-preview-frame{
-  margin-top: 26px;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.02);
-}
-
-.app-preview-frame iframe{
-  width: 100%;
-  height: 680px;
-  border: none;
-  display:block;
-}
     :root{
       --bg: #0b1220;
       --panel: rgba(10, 15, 25, 0.55);
@@ -459,7 +443,24 @@
       transition: transform .18s ease, border-color .18s ease, opacity .18s ease;
     }
     footer a:hover{ border-color: rgba(255,255,255,0.22); transform: translateY(-1px); opacity: .95; }
+/* =========================
+   PLATFORM PREVIEW
+   ========================= */
 
+.app-preview-frame{
+  margin-top: 26px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.02);
+}
+
+.app-preview-frame iframe{
+  width: 100%;
+  height: 680px;
+  border: none;
+  display:block;
+}
     /* Scroll reveal */
     .reveal{
       opacity: 0;
@@ -805,7 +806,35 @@
     <a class="btn btn-ghost" href="#contact">Rezerviraj klic</a>
   </div>
 </section>
- 
+ <section id="platform" class="reveal">
+  <h2 class="section-title">Naša platforma</h2>
+
+  <p class="muted">
+    Razvijamo tudi digitalno platformo za odkrivanje restavracij,
+    kulinaričnih lokacij in gastronomskih izkušenj.
+  </p>
+
+  <div class="app-preview-frame">
+    <iframe
+      src="https://flavor-verse-3f033c91.base44.app/"
+      loading="lazy"
+      title="Flavor Verse demo platforma">
+    </iframe>
+  </div>
+
+  <div class="cta-band reveal" style="margin-top:22px;">
+    <div class="cta-text">
+      Platforma je trenutno v razvoju. Demo prikazuje osnovno idejo za raziskovanje
+      restavracij, hrane in kulinaričnih izkušenj.
+    </div>
+
+    <a class="btn btn-ghost"
+       href="https://flavor-verse-3f033c91.base44.app/"
+       target="_blank">
+       Odpri demo
+    </a>
+  </div>
+</section>
   <section id="process" class="reveal">
     <h2 class="section-title">Kako poteka</h2>
     <p class="muted">Preprost, profesionalen proces — brez kompliciranja.</p>
@@ -1247,6 +1276,7 @@
 
 </body>
 </html>
+
 
 
 
